@@ -10,6 +10,7 @@ SHELL ["powershell", "-Command"]
 
 ARG IMAGE_OS=windows
 ARG IMAGE_ARCH=amd64
+ARG WINDOWS_VERSION=1809
 
 # install chocolatey package manager
 ENV chocolateyUseWindowsCompression=false
@@ -25,11 +26,12 @@ RUN choco install golang --version=$env:GOLANG_VERSION ; \
 # argoexec-base
 # Used as the base for both the release and development version of argoexec
 ####################################################################################################
-FROM mcr.microsoft.com/windows/nanoserver:1809 as argoexec-base
+FROM mcr.microsoft.com/windows/nanoserver:%WINDOWS_VERSION% as argoexec-base
 COPY --from=builder /windows/system32/netapi32.dll /windows/system32/netapi32.dll
 
 ARG IMAGE_OS=windows
 ARG IMAGE_ARCH=amd64
+ARG WINDOWS_VERSION=1809
 
 # NOTE: kubectl version should be one minor version less than https://storage.googleapis.com/kubernetes-release/release/stable.txt
 ENV KUBECTL_VERSION=1.18.8
